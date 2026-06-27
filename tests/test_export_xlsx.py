@@ -1,6 +1,5 @@
 # tests/test_export_xlsx.py
 import csv
-from pathlib import Path
 from openpyxl import load_workbook
 from src import export_xlsx
 

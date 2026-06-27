@@ -1,7 +1,6 @@
 # tests/test_rank_e2e.py
 import json, subprocess, sys
 import numpy as np
-from pathlib import Path
 from src import precompute
 
 def _make_candidate(i, title, yoe):
