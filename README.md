@@ -10,7 +10,7 @@
 Senior AI Engineer JD — fast, offline, explainable, and immune to keyword-stuffing.*
 
 ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-52%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-58%20passing-brightgreen)
 ![Ranking](https://img.shields.io/badge/ranking-~12.6s%20%2F%20100k-success)
 ![Compute](https://img.shields.io/badge/runtime-CPU--only%20·%20no%20network-informational)
 ![Honeypots](https://img.shields.io/badge/honeypots%20in%20top%20100-0-brightgreen)
@@ -36,7 +36,7 @@ and defensible end-to-end.
 | GPU during ranking | **none** (pure NumPy) | none allowed |
 | Format validation (`validate_submission.py`) | **passes** | hard gate |
 | Honeypots in our top 100 | **0** (41 detected pool-wide) | ≤ 10% |
-| Automated tests | **52 passing** (incl. end-to-end + real-data integration) | — |
+| Automated tests | **58 passing** (incl. end-to-end + real-data integration) | — |
 | Embedding artifact | 73 MB (float16, committed) | reproducible offline |
 
 ---
@@ -55,36 +55,34 @@ answer is **not** "most AI keywords" — the dataset contains traps. Our system 
 Two stages, split precisely because of the 5-minute rule — the heavy transformer work happens **once,
 offline**; the production-shaped ranking step is a cheap, scalable vector pass.
 
+**Stage A — offline precompute** *(one-time · GPU/CPU · no time limit)*
+
 ```mermaid
-flowchart LR
-    subgraph OFF["OFFLINE PRECOMPUTE — one-time · GPU/CPU · unbounded"]
-        direction TB
-        A["candidates.jsonl<br/>100k profiles"] --> B["build profile text"]
-        JD["job_description"] --> E
-        B --> E["bge-small-en-v1.5<br/>encoder"]
-        E --> F[("embeddings.npy<br/>float16 · 100k×384")]
-        E --> G[("jd_embedding.npy")]
-    end
+flowchart TB
+    A["candidates.jsonl — 100k profiles"] --> B["build profile text"]
+    JD["job_description"] --> E["bge-small-en-v1.5 encoder"]
+    B --> E
+    E --> F[("embeddings.npy<br/>float16 · 100k × 384")]
+    E --> G[("jd_embedding.npy")]
+    F --> ART[("committed artifacts")]
+    G --> ART
+```
 
-    subgraph RUN["RANKING STEP — CPU only · no network · ~12.6s"]
-        direction TB
-        C2["candidates.jsonl"] --> FEAT
-        F --> SEM["cosine similarity<br/>(semantic fit)"]
-        G --> SEM
-        SEM --> SCORE{{"composite score"}}
-        FEAT["structured features<br/>exp · product · title · location · edu"] --> SCORE
-        PEN["− red-flag penalties"] --> SCORE
-        BEH["× behavioral modifier"] --> SCORE
-        SCORE --> HP["honeypot demotion"]
-        HP --> SORT["sort: score ↓, candidate_id ↑"]
-        SORT --> TOP["top 100"]
-        TOP --> REA["fact-grounded reasoning"]
-        REA --> CSV["submission.csv"]
-        CSV --> XLS["submission.xlsx"]
-    end
+**Stage B — ranking step** *(CPU only · no network · ~12.6 s)*
 
-    F -.committed artifact.-> RUN
-    G -.committed artifact.-> RUN
+```mermaid
+flowchart TB
+    ART[("precomputed artifacts")] --> SEM["cosine similarity — semantic fit"]
+    CAN["candidates.jsonl"] --> FEAT["structured features<br/>exp · product · title · location · edu"]
+    SEM --> SCORE{{"composite score"}}
+    FEAT --> SCORE
+    PEN["− red-flag penalties"] --> SCORE
+    BEH["× behavioral modifier"] --> SCORE
+    SCORE --> HP["honeypot demotion"]
+    HP --> SORT["sort: score ↓ , candidate_id ↑"]
+    SORT --> TOP["top 100"]
+    TOP --> REA["fact-grounded reasoning"]
+    REA --> OUT["submission.csv → submission.xlsx"]
 ```
 
 ## <img src="docs/icons/scoring.svg" width="20" alt="" /> 3. How submissions are scored (and how we optimise for it)
@@ -198,14 +196,14 @@ src/rank.py          CPU-only ranking driver → validator-clean top-100 CSV
 src/export_xlsx.py   CSV → styled XLSX for portal upload
 artifacts/           committed float16 embeddings + JD embedding + candidate ids
 data/jd.txt          the job description used for ranking
-tests/               52 tests, incl. an end-to-end validator check + real-data integration
+tests/               58 tests, incl. an end-to-end validator check + real-data integration
 submission/          submission.csv (canonical) + submission.xlsx (portal)
 ```
 
 ## <img src="docs/icons/testing.svg" width="20" alt="" /> 9. Testing
 
 ```bash
-pytest        # 52 tests
+pytest        # 58 tests
 ```
 
 Coverage: feature logic, red-flag detection, behavioral scoring, honeypot detection, the rounding
