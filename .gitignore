@@ -1,0 +1,15 @@
+# Organizer dataset (large, not ours to redistribute in full)
+data/
+*.jsonl
+__MACOSX/
+"[PUB] India_runs_data_and_ai_challenge"/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Scratch
+*.tmp
