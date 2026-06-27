@@ -11,6 +11,18 @@ from src import config as C
 from src import io_utils, scoring, reasoning, precompute
 
 HEADER = ["candidate_id", "rank", "score", "reasoning"]
+SCORE_DECIMALS = 4
+
+def select_top(scored, top_n: int = 100):
+    """Round each score to the precision we actually write, then sort by that
+    rounded score (desc) and candidate_id (asc). Sorting on the *rounded* value
+    is what keeps the output consistent with the validator's tie-break rule:
+    rows that print as equal scores must be ordered by candidate_id ascending.
+    Adds a 'score4' field to each item and returns the top_n."""
+    for s in scored:
+        s["score4"] = round(float(s["score"]), SCORE_DECIMALS)
+    scored.sort(key=lambda x: (-x["score4"], x["candidate_id"]))
+    return scored[:top_n]
 
 def rank(candidates_path: Path, artifacts_dir: Path, out_path: Path, top_n: int = 100):
     emb, ids, jd = precompute.load_artifacts(artifacts_dir)
@@ -34,9 +46,7 @@ def rank(candidates_path: Path, artifacts_dir: Path, out_path: Path, top_n: int 
         s["_cand"] = c
         scored.append(s)
 
-    # sort: score desc, then candidate_id asc (matches validator tie-break rule)
-    scored.sort(key=lambda x: (-x["score"], x["candidate_id"]))
-    top = scored[:top_n]
+    top = select_top(scored, top_n)
 
     with open(out_path, "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
@@ -44,8 +54,8 @@ def rank(candidates_path: Path, artifacts_dir: Path, out_path: Path, top_n: int 
         for i, s in enumerate(top):
             rank_pos = i + 1
             reason = reasoning.build_reason(s["_cand"], s, rank=rank_pos, variant=i)
-            # score must be non-increasing; ties already ordered by candidate_id.
-            w.writerow([s["candidate_id"], rank_pos, f"{s['score']:.4f}", reason])
+            # score non-increasing; equal rounded scores ordered by candidate_id asc.
+            w.writerow([s["candidate_id"], rank_pos, f"{s['score4']:.4f}", reason])
     print(f"Wrote {len(top)} ranked candidates to {out_path}", file=sys.stderr)
 
 def main(argv=None):
