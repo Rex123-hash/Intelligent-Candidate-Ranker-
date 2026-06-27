@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🧭 Intelligent Candidate Discovery & Ranking
+<img src="docs/icons/logo.svg" width="52" alt="" />
+
+# Intelligent Candidate Discovery & Ranking
 
 ### Redrob × India Runs — Track 1 (Data & AI Challenge)
 
@@ -8,7 +10,7 @@
 Senior AI Engineer JD — fast, offline, explainable, and immune to keyword-stuffing.*
 
 ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-50%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-52%20passing-brightgreen)
 ![Ranking](https://img.shields.io/badge/ranking-~12.6s%20%2F%20100k-success)
 ![Compute](https://img.shields.io/badge/runtime-CPU--only%20·%20no%20network-informational)
 ![Honeypots](https://img.shields.io/badge/honeypots%20in%20top%20100-0-brightgreen)
@@ -24,22 +26,22 @@ availability signal, with impossible **"honeypot"** profiles detected and demote
 calls. No labels were used (the ground truth is hidden), so the scoring function is fully interpretable
 and defensible end-to-end.
 
-## 🎯 Results at a glance
+## <img src="docs/icons/results.svg" width="20" alt="" /> Results at a glance
 
 | Metric | Result | Requirement |
 |---|---|---|
-| ⏱️ Ranking-step runtime (full 100k) | **~12.6 s** on CPU | ≤ 5 min |
-| 🧠 Peak memory | well under 16 GB | ≤ 16 GB |
-| 🌐 Network during ranking | **none** | none allowed |
-| 🎮 GPU during ranking | **none** (pure NumPy) | none allowed |
-| ✅ Format validation (`validate_submission.py`) | **passes** | hard gate |
-| 🍯 Honeypots in our top 100 | **0** (41 detected pool-wide) | ≤ 10% |
-| 🧪 Automated tests | **50 passing** (incl. end-to-end + real-data integration) | — |
-| 📦 Embedding artifact | 73 MB (float16, committed) | reproducible offline |
+| Ranking-step runtime (full 100k) | **~12.6 s** on CPU | ≤ 5 min |
+| Peak memory | well under 16 GB | ≤ 16 GB |
+| Network during ranking | **none** | none allowed |
+| GPU during ranking | **none** (pure NumPy) | none allowed |
+| Format validation (`validate_submission.py`) | **passes** | hard gate |
+| Honeypots in our top 100 | **0** (41 detected pool-wide) | ≤ 10% |
+| Automated tests | **52 passing** (incl. end-to-end + real-data integration) | — |
+| Embedding artifact | 73 MB (float16, committed) | reproducible offline |
 
 ---
 
-## 1. The problem
+## <img src="docs/icons/problem.svg" width="20" alt="" /> 1. The problem
 
 Recruiters drown in profiles, and keyword/ATS filters miss real fits while surfacing keyword-stuffers.
 The task: read a complex JD, understand what it *means*, evaluate every candidate across profile, career
@@ -48,14 +50,14 @@ metadata, and behavioral signals, and return a **lightning-fast, accurately rank
 The released JD (Senior AI Engineer, Redrob) is deliberately nuanced and explicitly warns the right
 answer is **not** "most AI keywords" — the dataset contains traps. Our system is built around that.
 
-## 2. 🏗️ Architecture
+## <img src="docs/icons/architecture.svg" width="20" alt="" /> 2. Architecture
 
 Two stages, split precisely because of the 5-minute rule — the heavy transformer work happens **once,
 offline**; the production-shaped ranking step is a cheap, scalable vector pass.
 
 ```mermaid
 flowchart LR
-    subgraph OFF["🛠️  OFFLINE PRECOMPUTE — one-time · GPU/CPU · unbounded"]
+    subgraph OFF["OFFLINE PRECOMPUTE — one-time · GPU/CPU · unbounded"]
         direction TB
         A["candidates.jsonl<br/>100k profiles"] --> B["build profile text"]
         JD["job_description"] --> E
@@ -64,7 +66,7 @@ flowchart LR
         E --> G[("jd_embedding.npy")]
     end
 
-    subgraph RUN["⚡  RANKING STEP — CPU only · no network · ~12.6s"]
+    subgraph RUN["RANKING STEP — CPU only · no network · ~12.6s"]
         direction TB
         C2["candidates.jsonl"] --> FEAT
         F --> SEM["cosine similarity<br/>(semantic fit)"]
@@ -85,7 +87,7 @@ flowchart LR
     G -.committed artifact.-> RUN
 ```
 
-## 3. 🧮 How submissions are scored (and how we optimise for it)
+## <img src="docs/icons/scoring.svg" width="20" alt="" /> 3. How submissions are scored (and how we optimise for it)
 
 ```
 composite = 0.50 · NDCG@10  +  0.30 · NDCG@50  +  0.15 · MAP  +  0.05 · P@10
@@ -116,7 +118,7 @@ score = clip( 0.45·semantic  +  0.45·features  −  0.30·penalties , 0, 1 )  
 > `candidate_id` ascending — exactly matching the validator. (Sorting on full precision would let two rows
 > print as equal yet be ordered by score, which the validator rejects.) See `src/rank.py:select_top`.
 
-## 4. 🔍 Reading the JD's *meaning*, not its keywords
+## <img src="docs/icons/meaning.svg" width="20" alt="" /> 4. Reading the JD's *meaning*, not its keywords
 
 | The JD **wants** | We reward |
 |---|---|
@@ -134,7 +136,7 @@ score = clip( 0.45·semantic  +  0.45·features  −  0.30·penalties , 0, 1 )  
 | Title-chasers | short-stint penalty |
 | **Keyword-stuffers** (e.g. "Marketing Manager" with AI skills) | low title relevance + honeypot checks |
 
-## 5. 🍯 Honeypots & data validation
+## <img src="docs/icons/honeypot.svg" width="20" alt="" /> 5. Honeypots & data validation
 
 The dataset seeds ~80 subtly **impossible** profiles (forced to relevance tier 0); ranking >10% of them in
 the top 100 is an automatic disqualification. `src/honeypot.py` flags them with conservative,
@@ -147,7 +149,7 @@ false-positive-averse rules:
 **Result: 0 honeypots in our top 100** (41 caught across the full pool). We don't over-special-case — a
 sound ranker should *naturally* avoid them, and ours does.
 
-## 6. 💬 Explainability (no hallucinations)
+## <img src="docs/icons/explain.svg" width="20" alt="" /> 6. Explainability (no hallucinations)
 
 Every candidate gets a 1–2 sentence reason **assembled from facts actually present in their profile** —
 years, current title, named skills, product background, and the single biggest concern — never free text.
@@ -155,7 +157,7 @@ A test asserts no out-of-profile skill can appear in any reason; tone tracks ran
 
 > *"6.4 yrs as ML Engineer; core skills NLP, PyTorch; product-company background; strong semantic match. Concern: long notice period (120 days)."*
 
-## 7. 🚀 Quickstart
+## <img src="docs/icons/quickstart.svg" width="20" alt="" /> 7. Quickstart
 
 ```bash
 python -m venv .venv && .venv/Scripts/activate          # Python 3.13
@@ -180,7 +182,7 @@ python -m src.rank --candidates ./data/candidates.jsonl --artifacts ./artifacts 
 
 The committed `artifacts/` let this run with **no GPU and no network**, inside the evaluation sandbox.
 
-## 8. 🗂️ Repository layout
+## <img src="docs/icons/layout.svg" width="20" alt="" /> 8. Repository layout
 
 ```
 src/config.py        all tunable weights + JD-derived lexicons (single source of truth)
@@ -193,26 +195,26 @@ src/scoring.py       composite score = (semantic + features − penalties) × be
 src/reasoning.py     fact-grounded per-candidate reasoning
 src/precompute.py    offline embedding precompute → artifacts/
 src/rank.py          CPU-only ranking driver → validator-clean top-100 CSV
-src/export_xlsx.py   CSV → XLSX for portal upload
+src/export_xlsx.py   CSV → styled XLSX for portal upload
 artifacts/           committed float16 embeddings + JD embedding + candidate ids
 data/jd.txt          the job description used for ranking
-tests/               50 tests, incl. an end-to-end validator check + real-data integration
+tests/               52 tests, incl. an end-to-end validator check + real-data integration
 submission/          submission.csv (canonical) + submission.xlsx (portal)
 ```
 
-## 9. 🧪 Testing
+## <img src="docs/icons/testing.svg" width="20" alt="" /> 9. Testing
 
 ```bash
-pytest        # 50 tests
+pytest        # 52 tests
 ```
 
 Coverage: feature logic, red-flag detection, behavioral scoring, honeypot detection, the rounding
 tie-break, reasoning anti-hallucination, edge-case robustness (empty/partial records), scoring invariants
-(monotonic response to each signal), and **an end-to-end test that runs `rank.py` and confirms the output
-passes the organizers' `validate_submission.py`**, plus a real-data integration test over the sample pool
-using the committed embeddings.
+(monotonic response to each signal), styled-XLSX output, and **an end-to-end test that runs `rank.py` and
+confirms the output passes the organizers' `validate_submission.py`**, plus a real-data integration test
+over the sample pool using the committed embeddings.
 
-## 10. 🛡️ How this clears every evaluation stage
+## <img src="docs/icons/stages.svg" width="20" alt="" /> 10. How this clears every evaluation stage
 
 ```mermaid
 flowchart LR
@@ -230,7 +232,7 @@ flowchart LR
 | 4 — Manual review | fact-grounded reasoning, clean modular code, honest incremental git history |
 | 5 — Interview | every weight and design choice is documented and explainable |
 
-## 11. ⚖️ Design decisions & trade-offs
+## <img src="docs/icons/design.svg" width="20" alt="" /> 11. Design decisions & trade-offs
 
 - **No supervised learning-to-rank.** The ground truth is hidden — there are no labels to train on. A
   trained ranker would be guesswork *and* hard to defend. A transparent scoring function is honest,
@@ -241,14 +243,14 @@ flowchart LR
   vectors store compactly as float16 (73 MB for 100k, under GitHub's 100 MB limit).
 - **All weights in one config file.** Every number is named, readable, tunable — and explainable.
 
-## 12. 🔁 Reproducibility & compute declaration
+## <img src="docs/icons/repro.svg" width="20" alt="" /> 12. Reproducibility & compute declaration
 
 - Embeddings are precomputed offline (one-time, ~17 min on an RTX 4060) and **committed**, so the ranking
   step needs no GPU and no network.
 - The ranking step is deterministic given the same candidates file and artifacts.
 - Tested end-to-end on a 16 GB, CPU-only configuration within the 5-minute budget.
 
-## 13. 🧱 Limitations & future work
+## <img src="docs/icons/limitations.svg" width="20" alt="" /> 13. Limitations & future work
 
 - Honeypot detection is intentionally conservative (catches 41 of ~80) to avoid false positives that
   would hurt NDCG; the broader scorer keeps the rest out of the top ranks regardless.
@@ -256,7 +258,7 @@ flowchart LR
   held-out human relevance set would allow principled calibration.
 - A hosted demo (HuggingFace Space / Streamlit) can wrap `rank.py` for an interactive small-sample run.
 
-## 14. 🤝 AI tooling (transparency)
+## <img src="docs/icons/ai.svg" width="20" alt="" /> 14. AI tooling (transparency)
 
 An AI coding assistant was used for parts of implementation and code review. **No candidate data was sent
 to any hosted LLM**, and the ranking step makes **no network calls** — it scores candidates locally over
