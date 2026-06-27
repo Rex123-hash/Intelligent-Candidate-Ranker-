@@ -16,6 +16,10 @@ Senior AI Engineer JD — fast, offline, explainable, and immune to keyword-stuf
 ![Honeypots](https://img.shields.io/badge/honeypots%20in%20top%20100-0-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Rex123-hash/Intelligent-Candidate-Ranker-/blob/main/notebooks/demo.ipynb)
+
+**Live sandbox** — run the ranker on a sample in your browser (Colab, one click) or via the Gradio UI (`python app.py`).
+
 </div>
 
 ---
@@ -179,6 +183,11 @@ python -m src.rank --candidates ./data/candidates.jsonl --artifacts ./artifacts 
 ```
 
 The committed `artifacts/` let this run with **no GPU and no network**, inside the evaluation sandbox.
+
+### Live sandbox
+
+- **Colab (one click):** [Open the notebook](https://colab.research.google.com/github/Rex123-hash/Intelligent-Candidate-Ranker-/blob/main/notebooks/demo.ipynb) → `Runtime` → `Run all`. Clones the repo and ranks a sample pool end-to-end in your browser.
+- **Gradio UI (local or HuggingFace Spaces):** `pip install -r requirements-demo.txt && python app.py` — an interactive table of the ranked shortlist with scores and reasons. `app.py` works as a HuggingFace Space entry point.
 
 ## <img src="docs/icons/layout.svg" width="20" alt="" /> 8. Repository layout
 

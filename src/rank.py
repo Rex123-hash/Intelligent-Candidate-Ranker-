@@ -63,9 +63,11 @@ def main(argv=None):
     ap.add_argument("--candidates", default=str(C.DATA_FILE))
     ap.add_argument("--artifacts", default=str(C.ARTIFACTS))
     ap.add_argument("--out", default=str(C.ROOT / "submission" / "submission.csv"))
+    ap.add_argument("--top-n", type=int, default=100,
+                    help="how many candidates to rank (default 100; the official submission uses 100)")
     args = ap.parse_args(argv)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    rank(Path(args.candidates), Path(args.artifacts), Path(args.out))
+    rank(Path(args.candidates), Path(args.artifacts), Path(args.out), top_n=args.top_n)
 
 if __name__ == "__main__":
     main()
