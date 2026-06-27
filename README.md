@@ -10,7 +10,7 @@
 Senior AI Engineer JD — fast, offline, explainable, and immune to keyword-stuffing.*
 
 ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-58%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-59%20passing-brightgreen)
 ![Ranking](https://img.shields.io/badge/ranking-~12.6s%20%2F%20100k-success)
 ![Compute](https://img.shields.io/badge/runtime-CPU--only%20·%20no%20network-informational)
 ![Honeypots](https://img.shields.io/badge/honeypots%20in%20top%20100-0-brightgreen)
@@ -40,7 +40,7 @@ and defensible end-to-end.
 | GPU during ranking | **none** (pure NumPy) | none allowed |
 | Format validation (`validate_submission.py`) | **passes** | hard gate |
 | Honeypots in our top 100 | **0** (41 detected pool-wide) | ≤ 10% |
-| Automated tests | **58 passing** (incl. end-to-end + real-data integration) | — |
+| Automated tests | **59 passing** (incl. end-to-end + real-data integration) | — |
 | Embedding artifact | 73 MB (float16, committed) | reproducible offline |
 
 ---
@@ -205,14 +205,14 @@ src/rank.py          CPU-only ranking driver → validator-clean top-100 CSV
 src/export_xlsx.py   CSV → styled XLSX for portal upload
 artifacts/           committed float16 embeddings + JD embedding + candidate ids
 data/jd.txt          the job description used for ranking
-tests/               58 tests, incl. an end-to-end validator check + real-data integration
+tests/               59 tests, incl. an end-to-end validator check + real-data integration
 submission/          submission.csv (canonical) + submission.xlsx (portal)
 ```
 
 ## <img src="docs/icons/testing.svg" width="20" alt="" /> 9. Testing
 
 ```bash
-pytest        # 58 tests
+pytest        # 59 tests
 ```
 
 Coverage: feature logic, red-flag detection, behavioral scoring, honeypot detection, the rounding

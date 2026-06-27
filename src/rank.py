@@ -36,8 +36,12 @@ def rank(candidates_path: Path, artifacts_dir: Path, out_path: Path, top_n: int 
     id_to_row = {cid: i for i, cid in enumerate(ids)}
 
     scored = []
+    seen = set()
     for c in io_utils.iter_candidates(candidates_path):
         cid = c["candidate_id"]
+        if cid in seen:          # defensive: never emit a duplicate candidate_id
+            continue
+        seen.add(cid)
         row = id_to_row.get(cid)
         if row is None:
             raise SystemExit(f"No precomputed embedding for {cid}; artifacts out of sync.")
