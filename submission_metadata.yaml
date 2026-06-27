@@ -1,0 +1,63 @@
+# Redrob Hackathon — Submission Metadata (mirrors portal metadata)
+# Fields marked  <-- FILL  must be completed before you upload.
+
+team_name: "WebHackers"                  # confirm this matches your registered Team ID/name
+
+primary_contact:
+  name: "FULL NAME"                      # <-- FILL (team leader)
+  email: "amaank2405@gmail.com"
+  phone: "+91-XXXXXXXXXX"                # <-- FILL
+
+team_members:
+  - name: "FULL NAME"                    # <-- FILL
+    email: "amaank2405@gmail.com"
+    role: "Team Lead"
+  # add more members as needed
+
+# ---------------------------------------------------------------------------
+# Code and reproducibility
+# ---------------------------------------------------------------------------
+github_repo: "https://github.com/USERNAME/india-runs-ranker"   # <-- FILL after you push
+sandbox_link: ""                         # optional; add a HF Space / Colab link if built
+reproduce_command: "python -m src.rank --candidates ./data/candidates.jsonl --artifacts ./artifacts --out ./submission/submission.csv"
+
+# ---------------------------------------------------------------------------
+# Compute environment
+# ---------------------------------------------------------------------------
+compute:
+  platform: "HP OMEN (local)"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.13.1"
+  os: "Windows 11"
+  uses_gpu_for_inference: false          # ranking step is CPU-only
+  has_network_during_ranking: false      # no API calls during ranking
+  pre_computation_required: true         # embeddings precomputed offline
+  pre_computation_time_minutes: 0        # <-- FILL from the precompute run
+
+# ---------------------------------------------------------------------------
+# AI tools declaration (transparency only; honest declaration is not penalized)
+# ---------------------------------------------------------------------------
+ai_tools_used:
+  - "Claude"
+ai_usage_summary: |
+  Used Claude (Claude Code) for architecture, implementation, and code review.
+  No candidate data was sent to any hosted LLM, and the ranking step makes no
+  network calls — it scores candidates locally over precomputed embeddings.
+
+methodology_summary: |
+  Hybrid ranker over a 100k pool with no labels. Per candidate: dense semantic
+  similarity (bge-small-en-v1.5) to the JD + five structured JD-fit features
+  (experience band, product-vs-services, title relevance, location, education)
+  minus red-flag penalties (consulting-only, LLM-wrapper-only, manager-no-code,
+  vision/speech-only, title-chasing), times a behavioral availability modifier.
+  Impossible "honeypot" profiles are detected and demoted. CPU-only ranking over
+  precomputed float16 embeddings runs in well under the 5-minute budget. Reasoning
+  is generated from facts present in each profile (no hallucination).
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
