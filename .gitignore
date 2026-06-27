@@ -2,7 +2,9 @@
 data/
 *.jsonl
 __MACOSX/
-"[PUB] India_runs_data_and_ai_challenge"/
+# the extracted challenge bundle folder (brackets escaped for gitignore globbing)
+\[PUB\]*/
+*India_runs_data_and_ai_challenge*
 
 # Python
 __pycache__/
