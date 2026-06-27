@@ -134,7 +134,7 @@ matching slide. `[[FILL ...]]` markers are values to drop in after the final run
 ---
 
 ## Slide 10 — Submission Assets
-- **GitHub repo (public):** [[FILL: repo URL]] — code, tests, README, committed artifacts.
+- **GitHub repo (public):** https://github.com/Rex123-hash/Intelligent-Candidate-Ranker- — code, tests, README, committed artifacts.
 - **Ranked output:** `submission.xlsx` (top 100, with reasoning).
 - **This deck (PDF).**
 - *(Optional)* demo/sandbox link: [[FILL if built]].

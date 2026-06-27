@@ -17,7 +17,7 @@ team_members:
 # ---------------------------------------------------------------------------
 # Code and reproducibility
 # ---------------------------------------------------------------------------
-github_repo: "https://github.com/USERNAME/india-runs-ranker"   # <-- FILL after you push
+github_repo: "https://github.com/Rex123-hash/Intelligent-Candidate-Ranker-"
 sandbox_link: ""                         # optional; add a HF Space / Colab link if built
 reproduce_command: "python -m src.rank --candidates ./data/candidates.jsonl --artifacts ./artifacts --out ./submission/submission.csv"
 
