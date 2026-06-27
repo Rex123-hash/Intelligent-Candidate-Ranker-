@@ -4,15 +4,17 @@
 team_name: "WebHackers"                  # confirm this matches your registered Team ID/name
 
 primary_contact:
-  name: "FULL NAME"                      # <-- FILL (team leader)
-  email: "amaank2405@gmail.com"
+  name: "Srishti Rathi"                  # team leader
+  email: "srishtirathi723@gmail.com"
   phone: "+91-XXXXXXXXXX"                # <-- FILL
 
 team_members:
-  - name: "FULL NAME"                    # <-- FILL
-    email: "amaank2405@gmail.com"
+  - name: "Srishti Rathi"
+    email: "srishtirathi723@gmail.com"
     role: "Team Lead"
-  # add more members as needed
+  - name: "Amaan Khan"
+    email: "amaank2405@gmail.com"
+    role: "Engineer"
 
 # ---------------------------------------------------------------------------
 # Code and reproducibility
