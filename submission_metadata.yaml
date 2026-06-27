@@ -39,9 +39,9 @@ compute:
 # AI tools declaration (transparency only; honest declaration is not penalized)
 # ---------------------------------------------------------------------------
 ai_tools_used:
-  - "Claude"
+  - "Other"
 ai_usage_summary: |
-  Used Claude (Claude Code) for architecture, implementation, and code review.
+  An AI coding assistant was used for parts of implementation and code review.
   No candidate data was sent to any hosted LLM, and the ranking step makes no
   network calls — it scores candidates locally over precomputed embeddings.
 

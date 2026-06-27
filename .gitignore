@@ -13,3 +13,7 @@ env/
 
 # Scratch
 *.tmp
+
+
+# internal design/plan notes — not for submission
+docs/planning/
