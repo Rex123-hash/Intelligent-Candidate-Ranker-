@@ -108,11 +108,13 @@ matching slide. `[[FILL ...]]` markers are values to drop in after the final run
 ---
 
 ## Slide 8 — Results & Performance
-- **Ranking-step runtime:** [[FILL: measured seconds]] for the full 100k pool on CPU —
-  comfortably within the 5-minute budget (≤16 GB RAM, no network, no GPU).
+- **Ranking-step runtime:** ~12.6 seconds for the full 100,000-candidate pool on CPU —
+  comfortably within the 5-minute budget (≤16 GB RAM, no network, no GPU). Offline
+  embedding precompute (one-time, GPU) took ~17 minutes.
 - **Format:** output passes the organizers' `validate_submission.py` (100 rows, unique ranks,
-  non-increasing scores, correct tie-break).
-- **Honeypots in top 100:** [[FILL: count]] (target ≤10% — well clear of the disqualification line).
+  non-increasing scores, correct candidate_id tie-break).
+- **Honeypots in top 100:** 0 (our detector flags 41 impossible profiles across the full
+  pool; none reach the top 100 — well clear of the >10% disqualification line).
 - **Top-of-list quality:** top ranks are product-company AI/ML profiles with strong semantic
   match and high availability; off-target titles (e.g. Marketing Manager) are pushed down.
 - 27 automated tests pass, including the end-to-end format check.

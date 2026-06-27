@@ -32,8 +32,8 @@ compute:
   os: "Windows 11"
   uses_gpu_for_inference: false          # ranking step is CPU-only
   has_network_during_ranking: false      # no API calls during ranking
-  pre_computation_required: true         # embeddings precomputed offline
-  pre_computation_time_minutes: 0        # <-- FILL from the precompute run
+  pre_computation_required: true         # embeddings precomputed offline (GPU)
+  pre_computation_time_minutes: 17       # one-time embedding of 100k profiles on RTX 4060
 
 # ---------------------------------------------------------------------------
 # AI tools declaration (transparency only; honest declaration is not penalized)
